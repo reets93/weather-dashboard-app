@@ -23,14 +23,15 @@ h2 {
     font-size: 28px;
 }
 
-#search-input {
-    width: 350px;
+/* #search-input {
+    width: auto;
     height: auto;
     padding: 6px;
-}
+} */
 
 button {
-    width: 360px;
+    display: inline;
+    width: auto;
     height: auto;
     padding: 4px;
     color: white;
@@ -48,9 +49,4 @@ button :hover {
 
 #search-button  {
     background-color: lightskyblue;
-}
-
-hr {
-    width: 360px;
-    align-content: left;
 }
