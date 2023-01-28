@@ -3,15 +3,21 @@
 }
 
 body {
-    font-family: var(--main-font) ;   
+    font-family: var(--main-font) ;
 }
 
+form {
+    padding-bottom: 2px;
+    border-bottom: solid 1px grey ;
+}
 header {
-    background: blue;
-    padding: 10px;
+    background-color: #0A3668;
     text-align: center;
     max-width: 100%;
+    margin-bottom: 20px;
 }
+
+
 
 h1 {
     color: white;
@@ -48,7 +54,8 @@ button :hover {
 }
 
 #search-button  {
-    background-color: lightskyblue;
+    background-color: #0A3668;
+    color: white;
     margin: 5px;
     /* width: 100%; */
     border-radius: 4px;

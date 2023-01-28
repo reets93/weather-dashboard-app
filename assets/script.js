@@ -32,6 +32,12 @@ $('#search-button').on("click", function weatherData(e) {
         console.log("searchInput test")
         $("#history").append(searchInput)
 
+        
+        // local storage for buttons 
+        // persist local storage (add at top of function alongside empty() and after prevent default)
+        // link button click to search for city (use val() for city name search?) and consider event.target? 
+
+
         // today's weather data
         var today =
         {
