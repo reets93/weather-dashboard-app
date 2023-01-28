@@ -50,3 +50,7 @@ button :hover {
 #search-button  {
     background-color: lightskyblue;
 }
+
+#today {
+    background-color: dark blue;
+}
