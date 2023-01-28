@@ -14,6 +14,9 @@ $('#search-button').on("click", function weatherData(e) {
     $('#forecast-title').empty()
     $("#forecast").empty()
 
+    // persist local storage here? 
+
+
     //search terms + query url
     cityName = $('#search-input').val().trim()
     console.log(cityName)
@@ -25,13 +28,23 @@ $('#search-button').on("click", function weatherData(e) {
         method: "GET"
     }).then(function (response) {
         console.log(response)
+        
+        //clears search input after submit
+        $('#search-input').val('')
 
         //creates historical button 
         var searchInput = $('<button>').addClass("historical-btn")
-        searchInput.text(cityName).css({"background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px"})
+        searchInput.text(cityName).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
         console.log("searchInput test")
         $("#history").append(searchInput)
 
+        $('#historical-btn').on("click", function (event) {
+            event.target
+            console.log("historical button")
+            cityName = $("#historical-btn").innerHTML
+            console.log("hist - city name:"+cityName)
+
+        })        
         
         // local storage for buttons 
         // persist local storage (add at top of function alongside empty() and after prevent default)
@@ -155,4 +168,11 @@ $('#search-button').on("click", function weatherData(e) {
         dailyForecast()
     })
 
+
+
 })
+
+
+
+// clear search input after clicking search
+//validation for adding a correct city 
