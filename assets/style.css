@@ -37,7 +37,7 @@ button {
     color: white;
     text-align: center;  
     font-size: 20px;  
-    margin: 5px;
+    margin: 20px;
     border-radius: 4px;
     /* border: none; */
 }
@@ -49,8 +49,8 @@ button :hover {
 
 #search-button  {
     background-color: lightskyblue;
-}
-
-#today {
-    background-color: dark blue;
+    margin: 5px;
+    /* width: 100%; */
+    border-radius: 4px;
+    height: auto;
 }

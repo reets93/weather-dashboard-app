@@ -26,6 +26,12 @@ $('#search-button').on("click", function weatherData(e) {
     }).then(function (response) {
         console.log(response)
 
+        //creates historical button 
+        var searchInput = $('<button>').addClass("historical-btn")
+        searchInput.text(cityName).css({"background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px"})
+        console.log("searchInput test")
+        $("#history").append(searchInput)
+
         // today's weather data
         var today =
         {
