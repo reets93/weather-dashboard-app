@@ -1,18 +1,25 @@
 // prompt user to enter API key so that mine is not public
-var apiKEY = prompt("Please enter your OpenWeather API key to continue")
+// var apiKEY = prompt("Please enter your OpenWeather API key to continue")
+
+var apiKEY = "67ab21e9ad344035c753856c9739f6f2"
 console.log(apiKEY)
 var cityName;
-
-
 
 // event lister for submit button
 $('#search-button').on("click", function weatherData(e) {
     e.preventDefault()
+    
+    // clears weather data sections when new city searched
     $('#today').empty()
+    $('#forecast-title').empty()
+    $("#forecast").empty()
+
+    //search terms + query url
     cityName = $('#search-input').val().trim()
     console.log(cityName)
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKEY
 
+    // ajax function 
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -187,7 +194,8 @@ $('#search-button').on("click", function weatherData(e) {
         // })    
 
         // object containing details of 5-day forecast
-        var forecast = [
+
+        var fiveForecast = [
             {
                 date: moment().add(1, 'days').format("D-MM-YY"),
                 icon: "https://openweathermap.org/img/wn/" + response.list[12].weather[0].icon + ".png",
@@ -224,42 +232,45 @@ $('#search-button').on("click", function weatherData(e) {
                 humidity: response.list[39].main.humidity,
             }
         ]
-        dailyForecast()
-    })
+        console.log(fiveForecast)
+        
+        function dailyForecast() {
+            console.log("test")
+            console.log(fiveForecast)
 
+            for (let i = 0; i < fiveForecast.length; i++) {
+                // create div
+                var day = $('<div>').css({ "margin-left": "12px", padding: "20px", color: "white", "background-color": "#0A3668" })
+                $("#forecast").append(day)
 
-    function dailyForecast() {
-        for (let i = 0; i < forecast.length; i++) {
-            // create div
-            var day = $('<div>').css({ "margin-left": "12px", padding: "20px", color: "white", "background-color": "#0A3668" })
+                //create date
+                var date = $('<h6>')
+                date.text(fiveForecast[i].date)
 
-            //create date
-            var date = $('<h6>')
-            date.text(forecast[i].date)
+                //create icon
+                var icon = $('<img>')
+                icon.attr("src", fiveForecast[i].icon)
 
-            //create icon
-            var icon = $('<img>')
-            icon.attr("src", forecast[i].icon)
+                //create temp
+                var temp = $('<p>')
+                temp.text("Temp: " + fiveForecast[i].temp + "°C")
 
-            //create temp
-            var temp = $('<p>')
-            temp.text("Temp: " + forecast[i].temp + "°C")
+                //create wind
+                var wind = $('<p>')
+                wind.text("Wind: " + fiveForecast[i].wind + " kph")
 
-            //create wind
-            var wind = $('<p>')
-            wind.text("Wind: " + forecast[i].wind + " kph")
+                //create humidity
+                var humidity = $('<p>')
+                humidity.text("Humidity: " + fiveForecast[i].humidity + "%")
 
-            //create humidity
-            var humidity = $('<p>')
-            humidity.text("Humidity: " + forecast[i].humidity + "%")
+                //append
+                day.append(date).append(icon).append(temp).append(wind).append(humidity)
+            }
 
-            //append
-            day.append(date).append(icon).append(temp).append(wind).append(humidity)
-            $("#forecast").append(day)
         }
 
-    }
-
-
+        //call the daily forecast function
+        dailyForecast()
+    })
 
 })
