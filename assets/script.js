@@ -7,6 +7,13 @@ var cityName;
 var searchCity;
 var historySearch = []
 
+    // persist local storage here? 
+    for (i=0; i<localStorage.length; i++) {
+        var histBtn = $('<button>').addClass("historical-btn")
+        histBtn.text(localStorage.getItem("city"+[i])).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
+        $("#history").append(histBtn)
+    }
+
 // event lister for submit button
 $('#search-button').on("click", function weatherData(e) {
     e.preventDefault()
@@ -15,9 +22,6 @@ $('#search-button').on("click", function weatherData(e) {
     $('#today').empty()
     $('#forecast-title').empty()
     $("#forecast").empty()
-
-    // persist local storage here? 
-
 
     //search terms + query url
     cityName = $('#search-input').val().trim()
