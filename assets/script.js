@@ -22,7 +22,7 @@ $('#search-button').on("click", function weatherData(e) {
     $('#forecast-title').empty()
     $("#forecast").empty()
 
-    //search terms + query url
+    //search terms + query url 
     if ($('#search-input').val() === "") {
         cityName = searchCity
     } else {
@@ -69,7 +69,6 @@ $('#search-button').on("click", function weatherData(e) {
             for (let i = 0; i < historySearch.length; i++) {
                 localStorage.setItem("city" + [i], historySearch[i])
             }
-            // link button click to search for city (use val() for city name search?) and consider event.target? 
         }
         store()
 
