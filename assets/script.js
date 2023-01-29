@@ -15,6 +15,7 @@ for (i = 0; i < localStorage.length; i++) {
 // event lister for submit button
 $('#search-button').on("click", function weatherData(e) {
     e.preventDefault()
+    e.stopPropagation()
 
     // clears weather data sections when new city searched
     $('#today').empty()
@@ -22,11 +23,14 @@ $('#search-button').on("click", function weatherData(e) {
     $("#forecast").empty()
 
     //search terms + query url
-    cityName = $('#search-input').val().trim()
+    if ($('#search-input').val() === "") {
+        cityName = searchCity
+    } else {
+        cityName = $('#search-input').val().trim()
+    }
 
     console.log(cityName)
-    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName +  "&appid=" + apiKEY
-   
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKEY
 
     // ajax function 
     $.ajax({
@@ -38,19 +42,19 @@ $('#search-button').on("click", function weatherData(e) {
         //clears search input after submit
         $('#search-input').val('')
 
-   // if ($('#search-input').checkValidity === false) {
-    //     alert("Please enter a valid city. Check your spelling and try again")
-    //     console.log("city not valid")
-    // } else {
-    //     console.log("city valid")
-    // }
+        // if ($('#search-input').checkValidity === false) {
+        //     alert("Please enter a valid city. Check your spelling and try again")
+        //     console.log("city not valid")
+        // } else {
+        //     console.log("city valid")
+        // }
 
-    // if (response.cod == 200) {
-    //     console.log("valid")
-    // } else {
-    //     alert("Please enter a valid city. Check your spelling and try again")
-    //     console.log("city not valid")
-    // }
+        // if (response.cod == 200) {
+        //     console.log("valid")
+        // } else {
+        //     alert("Please enter a valid city. Check your spelling and try again")
+        //     console.log("city not valid")
+        // }
 
         //creates historical button 
         var searchInput = $('<button>').addClass("historical-btn")
@@ -58,8 +62,7 @@ $('#search-button').on("click", function weatherData(e) {
         console.log("searchInput test")
         $("#history").prepend(searchInput)
         historySearch.push(searchInput.text())
-        console.log("historySearch: " + historySearch)
-        console.log(historySearch)
+
 
         // local storage for buttons 
         function store() {
@@ -74,7 +77,7 @@ $('#search-button').on("click", function weatherData(e) {
         $('.historical-btn').on('click', function (button) {
             button.stopPropagation()
             searchCity = $(button.target).text()
-            console.log("history:" + searchCity)
+            weatherData(e)
         })
 
         // today's weather data
