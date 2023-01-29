@@ -2,17 +2,16 @@
 // var apiKEY = prompt("Please enter your OpenWeather API key to continue")
 
 var apiKEY = "67ab21e9ad344035c753856c9739f6f2"
-console.log(apiKEY)
 var cityName;
 var searchCity;
 var historySearch = []
 
-    // persist local storage here? 
-    for (i=0; i<localStorage.length; i++) {
-        var histBtn = $('<button>').addClass("historical-btn")
-        histBtn.text(localStorage.getItem("city"+[i])).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
-        $("#history").append(histBtn)
-    }
+// persist local storage
+for (i = 0; i < localStorage.length; i++) {
+    var histBtn = $('<button>').addClass("historical-btn")
+    histBtn.text(localStorage.getItem("city" + [i])).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
+    $("#history").append(histBtn)
+}
 
 // event lister for submit button
 $('#search-button').on("click", function weatherData(e) {
@@ -25,9 +24,16 @@ $('#search-button').on("click", function weatherData(e) {
 
     //search terms + query url
     cityName = $('#search-input').val().trim()
-    console.log(cityName)
-    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKEY
 
+    console.log(cityName)
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName +  "&appid=" + apiKEY
+   
+    // if ($('#search-input').checkValidity === false) {
+    //     alert("Please enter a valid city. Check your spelling and try again")
+    //     console.log("city not valid")
+    // } else {
+    //     console.log("city valid")
+    // }
 
     // ajax function 
     $.ajax({
@@ -181,6 +187,8 @@ $('#search-button').on("click", function weatherData(e) {
         dailyForecast()
     })
 
-
-
 })
+
+// validate city input
+// validate api key? 
+// link button to the search city 
