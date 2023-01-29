@@ -4,6 +4,9 @@
 var apiKEY = "67ab21e9ad344035c753856c9739f6f2"
 console.log(apiKEY)
 var cityName;
+var searchCity;
+var historySearch = []
+
 
 // event lister for submit button
 $('#search-button').on("click", function weatherData(e) {
@@ -22,13 +25,14 @@ $('#search-button').on("click", function weatherData(e) {
     console.log(cityName)
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKEY
 
+
     // ajax function 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
         console.log(response)
-        
+
         //clears search input after submit
         $('#search-input').val('')
 
@@ -36,17 +40,27 @@ $('#search-button').on("click", function weatherData(e) {
         var searchInput = $('<button>').addClass("historical-btn")
         searchInput.text(cityName).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
         console.log("searchInput test")
-        $("#history").append(searchInput)
+        $("#history").prepend(searchInput)
+        historySearch.push(searchInput.text())
+        console.log("historySearch: " + historySearch)
+        console.log(historySearch)
 
-        $('#historical-btn').on("click", function (event) {
-            event.target
-            console.log("historical button")
-            cityName = $("#historical-btn").innerHTML
-            console.log("hist - city name:"+cityName)
+        //on click for historical button
+        $('.historical-btn').on('click', function (button) {
+            button.stopPropagation()
+            searchCity = $(button.target).text()
+            console.log("history:" + searchCity)
+        })
 
-        })        
-        
         // local storage for buttons 
+        function store() {
+            for (let i = 0; i < historySearch.length; i++) {
+                localStorage.setItem("city" + [i], historySearch[i])
+            }
+        }
+        // call local storage 
+        store()
+
         // persist local storage (add at top of function alongside empty() and after prevent default)
         // link button click to search for city (use val() for city name search?) and consider event.target? 
 
@@ -171,8 +185,3 @@ $('#search-button').on("click", function weatherData(e) {
 
 
 })
-
-
-
-// clear search input after clicking search
-//validation for adding a correct city 
