@@ -7,7 +7,6 @@ var cityName;
 var searchCity;
 var historySearch = []
 
-
 // event lister for submit button
 $('#search-button').on("click", function weatherData(e) {
     e.preventDefault()
@@ -45,25 +44,21 @@ $('#search-button').on("click", function weatherData(e) {
         console.log("historySearch: " + historySearch)
         console.log(historySearch)
 
+        // local storage for buttons 
+        function store() {
+            for (let i = 0; i < historySearch.length; i++) {
+                localStorage.setItem("city" + [i], historySearch[i])
+            }
+            // link button click to search for city (use val() for city name search?) and consider event.target? 
+        }
+        store()
+
         //on click for historical button
         $('.historical-btn').on('click', function (button) {
             button.stopPropagation()
             searchCity = $(button.target).text()
             console.log("history:" + searchCity)
         })
-
-        // local storage for buttons 
-        function store() {
-            for (let i = 0; i < historySearch.length; i++) {
-                localStorage.setItem("city" + [i], historySearch[i])
-            }
-        }
-        // call local storage 
-        store()
-
-        // persist local storage (add at top of function alongside empty() and after prevent default)
-        // link button click to search for city (use val() for city name search?) and consider event.target? 
-
 
         // today's weather data
         var today =
