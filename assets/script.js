@@ -1,7 +1,6 @@
 // prompt user to enter API key so that mine is not public
-// var apiKEY = prompt("Please enter your OpenWeather API key to continue")
+var apiKEY = prompt("Please enter your OpenWeather API key to continue")
 
-var apiKEY = "67ab21e9ad344035c753856c9739f6f2"
 var cityName;
 var searchCity;
 var historySearch = []
@@ -28,12 +27,6 @@ $('#search-button').on("click", function weatherData(e) {
     console.log(cityName)
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName +  "&appid=" + apiKEY
    
-    // if ($('#search-input').checkValidity === false) {
-    //     alert("Please enter a valid city. Check your spelling and try again")
-    //     console.log("city not valid")
-    // } else {
-    //     console.log("city valid")
-    // }
 
     // ajax function 
     $.ajax({
@@ -44,6 +37,20 @@ $('#search-button').on("click", function weatherData(e) {
 
         //clears search input after submit
         $('#search-input').val('')
+
+   // if ($('#search-input').checkValidity === false) {
+    //     alert("Please enter a valid city. Check your spelling and try again")
+    //     console.log("city not valid")
+    // } else {
+    //     console.log("city valid")
+    // }
+
+    // if (response.cod == 200) {
+    //     console.log("valid")
+    // } else {
+    //     alert("Please enter a valid city. Check your spelling and try again")
+    //     console.log("city not valid")
+    // }
 
         //creates historical button 
         var searchInput = $('<button>').addClass("historical-btn")
