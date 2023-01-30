@@ -1,15 +1,38 @@
 // prompt user to enter API key so that mine is not public
-var apiKEY = prompt("Please enter your OpenWeather API key to continue")
+// var apiKEY = prompt("Please enter your OpenWeather API key to continue")
+
+var apiKEY = "67ab21e9ad344035c753856c9739f6f2"
 
 var cityName;
 var searchCity;
 var historySearch = []
 
 // persist local storage
-for (i = 0; i < localStorage.length; i++) {
+for (i = 0; i < localStorage.length; i++) { //original code
     var histBtn = $('<button>').addClass("historical-btn")
     histBtn.text(localStorage.getItem("city" + [i])).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
     $("#history").append(histBtn)
+}
+
+// for (i = 0; i < historySearch.length; i++) { // fix attempt
+//     var histBtn = $('<button>').addClass("historical-btn")
+//     histBtn.text(localStorage.getItem("search-history")).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
+//     $("#history").append(histBtn)
+// }
+
+function persist(){ //https://stackoverflow.com/questions/59740779/dynamically-creating-buttons-from-localstorage-array
+    var loadData = localStorage.getItem("search-history")
+    if (loadData == null || loadData == "") return;
+
+    var searchButtonArray = JSON.parse(loadData)
+
+    for (i=0; i<searchButtonArray.length; i++) {
+        $('#history').empty() //trying to clear ? --> doesn't seem to do anything
+        var create = $('<button>')
+        create.css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
+        create.text(searchButtonArray[i])
+        $("#history").append(create)
+    }
 }
 
 // event lister for submit button
@@ -26,7 +49,7 @@ $('#search-button').on("click", function weatherData(e) {
     if ($('#search-input').val() === "") {
         cityName = searchCity
     } else {
-        cityName = $('#search-input').val().trim()
+         cityName = $('#search-input').val().trim()
     }
 
     console.log(cityName)
@@ -65,7 +88,13 @@ $('#search-button').on("click", function weatherData(e) {
 
 
         // local storage for buttons 
-        function store() {
+        // function store() { // fix attempt
+        //     for (let i = 0; i < historySearch.length; i++) {
+        //         localStorage.setItem("search-history", JSON.stringify(historySearch))
+        //     }
+        // }
+
+        function store() { // original code 
             for (let i = 0; i < historySearch.length; i++) {
                 localStorage.setItem("city" + [i], historySearch[i])
             }
@@ -76,6 +105,7 @@ $('#search-button').on("click", function weatherData(e) {
         $('.historical-btn').on('click', function (button) {
             button.stopPropagation()
             searchCity = $(button.target).text()
+            // $("#history").empty()
             weatherData(e)
         })
 
