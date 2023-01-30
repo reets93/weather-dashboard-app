@@ -177,31 +177,32 @@ $('#search-button').on("click", function weatherData(e) {
         dailyForecast()
 
         // on click for historical button
-        $('.historical-btn').on('click', function (button) {
-            button.stopPropagation()
-            searchCity = $(button.target).text()
-            var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity + "&appid=" + apiKEY
+        // $('.historical-btn').on('click', function (e) {
+        //     e.stopPropagation()
+        //     e.preventDefault() 
+        //     console.log("working")
+        //     searchCity = $(e.target).text()
+        //     console.log("checking " +searchCity)
 
+        //     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity + "&appid=" + apiKEY
 
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (reponse) {
-                console.log(response)
-                $('#today').empty()
-                $('#forecast-title').empty()
-                $("#forecast").empty()
-                todayWeather()
-                dailyForecast()
-            })
-        })
+        //     $.ajax({
+        //         url: queryURL,
+        //         method: "GET"
+        //     }).then(function (reponse) {
+        //         console.log(response)
+        //         $('#today').empty()
+        //         $('#forecast-title').empty()
+        //         $("#forecast").empty()
+        //         todayWeather()
+        //         dailyForecast()
+        //     })
+ 
     })
-
-
-
 })
+// })
 
-$('.historical-btn').on('click', function (button) {
+$('.historical-btn').on('click', function searchHistory(button) {
     var content = $(button.target).text()
     console.log("hist-button working " + content)
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + content + "&appid=" + apiKEY
@@ -338,6 +339,3 @@ $('.historical-btn').on('click', function (button) {
 
     })
 })
-
-// validate city input
-// validate api key? 
