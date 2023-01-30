@@ -42,6 +42,30 @@ $('#search-button').on("click", function weatherData(e) {
         //creates historical button 
         var searchInput = $('<button>').addClass("historical-btn")
         searchInput.text(cityName).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
+        // creates event listener for newly created button
+        searchInput.on('click', function (button) {
+            var content = $(button.target).text()
+            var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + content + "&appid=" + apiKEY
+        
+            //ajax function
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                console.log(response)
+                // clears the dashboard divs
+                $('#today').empty()
+                $('#forecast-title').empty()
+                $('#forecast').empty()
+        
+                // calls the function for today's weather
+                todayWeather(response)
+        
+                // calls the function for the forecast
+                dailyForecast(response)
+        
+            })
+        })
         console.log("searchInput test")
         $("#history").prepend(searchInput)
         historySearch.push(searchInput.text())
