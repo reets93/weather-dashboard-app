@@ -46,29 +46,29 @@ $('#search-button').on("click", function weatherData(e) {
         $("#history").prepend(searchInput)
         historySearch.push(searchInput.text())
 
-
+        // calls function for local storage
         store()
 
-
+        // calls function for today's weather
         todayWeather(response)
-
 
         //call the daily forecast function
         dailyForecast(response)
 
 
     }).catch(err => alert("Please enter a valid city name. Check spelling and try again."))
-    //catch function learnt from a youtube video : https://www.youtube.com/watch?v=GXrDEA3SIOQ
+    //catch function learnt from : https://www.youtube.com/watch?v=GXrDEA3SIOQ
     // })
 })
 
-
+// function for setting local storage
 function store() {
     for (let i = 0; i < historySearch.length; i++) {
         localStorage.setItem("city" + [i], historySearch[i])
     }
 }
 
+// function for today's weather
 function todayWeather(response) {
     // today's weather data
     var today =
@@ -91,12 +91,15 @@ function todayWeather(response) {
     todayTitle.append(currentIcon)
 
     //create p elements for today's weather data
+    // temp
     var currentTemp = $('<p>')
     currentTemp.text("Temp: " + today.celsius + "°C")
 
+    // wind
     var currentWind = $('<p>')
     currentWind.text("Wind: " + today.wind + " KPH")
 
+    // humidity
     var currentHumidity = $('<p>')
     currentHumidity.text("Humidity: " + today.humidity + "%")
 
@@ -113,6 +116,7 @@ function todayWeather(response) {
 function dailyForecast(response) {
     // Weather details for 5-day forecast
     var fiveForecast = [
+        // day 1 forecast
         {
             date: moment().add(1, 'days').format("D-MM-YY"),
             icon: "https://openweathermap.org/img/wn/" + response.list[12].weather[0].icon + ".png",
@@ -120,6 +124,7 @@ function dailyForecast(response) {
             wind: response.list[12].wind.speed,
             humidity: response.list[12].main.humidity,
         },
+        //day 2 forecast
         {
             date: moment().add(2, 'days').format("D-MM-YY"),
             icon: "https://openweathermap.org/img/wn/" + response.list[20].weather[0].icon + ".png",
@@ -127,6 +132,7 @@ function dailyForecast(response) {
             wind: response.list[20].wind.speed,
             humidity: response.list[20].main.humidity,
         },
+        // day 3 forecast
         {
             date: moment().add(3, 'days').format("D-MM-YY"),
             icon: "https://openweathermap.org/img/wn/" + response.list[28].weather[0].icon + ".png",
@@ -134,6 +140,7 @@ function dailyForecast(response) {
             wind: response.list[28].wind.speed,
             humidity: response.list[28].main.humidity,
         },
+        // day 4 forecast
         {
             date: moment().add(4, 'days').format("D-MM-YY"),
             icon: "https://openweathermap.org/img/wn/" + response.list[36].weather[0].icon + ".png",
@@ -141,6 +148,7 @@ function dailyForecast(response) {
             wind: response.list[36].wind.speed,
             humidity: response.list[36].main.humidity,
         },
+        // day 5 forecast
         {
             date: moment().add(5, 'days').format("D-MM-YY"),
             icon: "https://openweathermap.org/img/wn/" + response.list[39].weather[0].icon + ".png",
@@ -152,6 +160,7 @@ function dailyForecast(response) {
 
     console.log(fiveForecast)
 
+    // for loop to create the five-day forecast 
     for (let i = 0; i < fiveForecast.length; i++) {
         // create div
         var day = $('<div>').css({ "margin-left": "12px", padding: "20px", color: "white", "background-color": "#0A3668" })
@@ -183,12 +192,10 @@ function dailyForecast(response) {
 
 }
 
-
+//event delegation for the buttons in search history to search for city when clicked 
 $('.historical-btn').on('click', function searchHistory(button) {
     var content = $(button.target).text()
-    console.log("hist-button working " + content)
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + content + "&appid=" + apiKEY
-    console.log("link working")
 
     //ajax function
     $.ajax({
@@ -196,10 +203,15 @@ $('.historical-btn').on('click', function searchHistory(button) {
         method: "GET"
     }).then(function (response) {
         console.log(response)
+        // clears the dashboard divs
         $('#today').empty()
         $('#forecast-title').empty()
         $('#forecast').empty()
+
+        // calls the function for today's weather
         todayWeather(response)
+
+        // calls the function for the forecast
         dailyForecast(response)
 
     })
