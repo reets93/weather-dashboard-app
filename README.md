@@ -12,7 +12,7 @@ This app has been created using HTML, Bootstrap, CSS, Javascript, JQuery and the
 You will need a valid api key from Open Weather to use this app successfully. 
 
 ## Usage
-Live Deployed Page:
+Live Deployed Page: https://reets93.github.io/weather-dashboard-app/
 
 Please note that to use the weather app, you will need a valid api key from Open Weather. 
 
