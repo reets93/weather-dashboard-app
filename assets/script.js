@@ -14,26 +14,6 @@ for (i = 0; i < localStorage.length; i++) { //original code
     $("#history").append(histBtn)
 }
 
-// for (i = 0; i < historySearch.length; i++) { // fix attempt
-//     var histBtn = $('<button>').addClass("historical-btn")
-//     histBtn.text(localStorage.getItem("search-history")).css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
-//     $("#history").append(histBtn)
-// }
-
-function persist(){ //https://stackoverflow.com/questions/59740779/dynamically-creating-buttons-from-localstorage-array
-    var loadData = localStorage.getItem("search-history")
-    if (loadData == null || loadData == "") return;
-
-    var searchButtonArray = JSON.parse(loadData)
-
-    for (i=0; i<searchButtonArray.length; i++) {
-        $('#history').empty() //trying to clear ? --> doesn't seem to do anything
-        var create = $('<button>')
-        create.css({ "background-color": "##D5E8F6", color: "#474954", "border-radius": "4px", "margin-top": "8px" })
-        create.text(searchButtonArray[i])
-        $("#history").append(create)
-    }
-}
 
 // event lister for submit button
 $('#search-button').on("click", function weatherData(e) {
@@ -46,12 +26,7 @@ $('#search-button').on("click", function weatherData(e) {
     $("#forecast").empty()
 
     //search terms + query url 
-    if ($('#search-input').val() === "") {
-        cityName = searchCity
-    } else {
-         cityName = $('#search-input').val().trim()
-    }
-
+    cityName = $('#search-input').val().trim()
     console.log(cityName)
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKEY
 
@@ -65,19 +40,7 @@ $('#search-button').on("click", function weatherData(e) {
         //clears search input after submit
         $('#search-input').val('')
 
-        // if ($('#search-input').checkValidity === false) {
-        //     alert("Please enter a valid city. Check your spelling and try again")
-        //     console.log("city not valid")
-        // } else {
-        //     console.log("city valid")
-        // }
-
-        // if (response.cod == 200) {
-        //     console.log("valid")
-        // } else {
-        //     alert("Please enter a valid city. Check your spelling and try again")
-        //     console.log("city not valid")
-        // }
+        //validate city? 
 
         //creates historical button 
         var searchInput = $('<button>').addClass("historical-btn")
@@ -87,66 +50,54 @@ $('#search-button').on("click", function weatherData(e) {
         historySearch.push(searchInput.text())
 
 
-        // local storage for buttons 
-        // function store() { // fix attempt
-        //     for (let i = 0; i < historySearch.length; i++) {
-        //         localStorage.setItem("search-history", JSON.stringify(historySearch))
-        //     }
-        // }
-
-        function store() { // original code 
+        function store() {
             for (let i = 0; i < historySearch.length; i++) {
                 localStorage.setItem("city" + [i], historySearch[i])
             }
         }
         store()
 
-        //on click for historical button
-        $('.historical-btn').on('click', function (button) {
-            button.stopPropagation()
-            searchCity = $(button.target).text()
-            // $("#history").empty()
-            weatherData(e)
-        })
 
-        // today's weather data
-        var today =
-        {
-            date: moment().format("(D MMM YYYY)"),
-            city: response.city.name,
-            celsius: Math.floor(response.list[0].main.temp - 273.15),
-            wind: response.list[0].wind.speed,
-            humidity: response.list[0].main.humidity,
-            icon: "https://openweathermap.org/img/wn/" + response.list[0].weather[0].icon + ".png"
+        todayWeather()
+        function todayWeather() {
+            // today's weather data
+            var today =
+            {
+                date: moment().format("(D MMM YYYY)"),
+                city: response.city.name,
+                celsius: Math.floor(response.list[0].main.temp - 273.15),
+                wind: response.list[0].wind.speed,
+                humidity: response.list[0].main.humidity,
+                icon: "https://openweathermap.org/img/wn/" + response.list[0].weather[0].icon + ".png"
+            }
+
+            // create h2 element for today's city + date
+            var todayTitle = $('<h2>')
+            todayTitle.text(today.city + " " + today.date)
+
+            // create current weather icon
+            var currentIcon = $('<img>')
+            currentIcon.attr("src", today.icon)
+            todayTitle.append(currentIcon)
+
+            //create p elements for today's weather data
+            var currentTemp = $('<p>')
+            currentTemp.text("Temp: " + today.celsius + "°C")
+
+            var currentWind = $('<p>')
+            currentWind.text("Wind: " + today.wind + " KPH")
+
+            var currentHumidity = $('<p>')
+            currentHumidity.text("Humidity: " + today.humidity + "%")
+
+            // styling and append details to today section
+            $("#today").css({ border: "solid 1px grey", padding: "8px" }).append(todayTitle).append(currentTemp).append(currentWind).append(currentHumidity)
+
+            // create element for forecast heading
+            var forecastTitle = $('<h4>')
+            forecastTitle.text("5-Day Forecast:")
+            $("#forecast-title").append(forecastTitle)
         }
-
-        // create h2 element for today's city + date
-        var todayTitle = $('<h2>')
-        todayTitle.text(today.city + " " + today.date)
-
-        // create current weather icon
-        var currentIcon = $('<img>')
-        currentIcon.attr("src", today.icon)
-        todayTitle.append(currentIcon)
-
-        //create p elements for today's weather data
-        var currentTemp = $('<p>')
-        currentTemp.text("Temp: " + today.celsius + "°C")
-
-        var currentWind = $('<p>')
-        currentWind.text("Wind: " + today.wind + " KPH")
-
-        var currentHumidity = $('<p>')
-        currentHumidity.text("Humidity: " + today.humidity + "%")
-
-        // styling and append details to today section
-        $("#today").css({ border: "solid 1px grey", padding: "8px" }).append(todayTitle).append(currentTemp).append(currentWind).append(currentHumidity)
-
-        // create element for forecast heading
-        var forecastTitle = $('<h4>')
-        forecastTitle.text("5-Day Forecast:")
-        $("#forecast-title").append(forecastTitle)
-
 
         // Weather details for 5-day forecast
         var fiveForecast = [
@@ -224,7 +175,29 @@ $('#search-button').on("click", function weatherData(e) {
 
         //call the daily forecast function
         dailyForecast()
+
+        //on click for historical button
+        $('.historical-btn').on('click', function (button) {
+            button.stopPropagation()
+            searchCity = $(button.target).text()
+            var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity + "&appid=" + apiKEY
+
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (reponse) {
+                console.log(response)
+                $('#today').empty()
+                $('#forecast-title').empty()
+                $("#forecast").empty()
+                todayWeather()
+                dailyForecast()
+            })
+        })
     })
+
+
 
 })
 
