@@ -49,12 +49,12 @@ $('#search-button').on("click", function weatherData(e) {
         historySearch.push(searchInput.text())
 
 
+        store()
         function store() {
             for (let i = 0; i < historySearch.length; i++) {
                 localStorage.setItem("city" + [i], historySearch[i])
             }
         }
-        store()
 
 
         todayWeather()
@@ -197,8 +197,9 @@ $('#search-button').on("click", function weatherData(e) {
         //         todayWeather()
         //         dailyForecast()
         //     })
- 
-    })
+
+    }).catch(err => alert("Please enter a valid city name. Check spelling and try again."))
+    //catch function learnt from a youtube video : https://www.youtube.com/watch?v=GXrDEA3SIOQ
 })
 // })
 
